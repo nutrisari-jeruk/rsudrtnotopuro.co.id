@@ -13,6 +13,7 @@ const websites: Website[] = websitesData as Website[];
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   const { isDark, toggle } = useDarkMode();
 
   const filteredWebsites = websites.filter(website =>
@@ -104,12 +105,15 @@ function App() {
                 <div className="relative z-10 flex flex-col items-center gap-3 w-full">
                   <div className="p-3 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 group-hover:from-blue-100 group-hover:to-indigo-100 dark:group-hover:from-blue-800/40 dark:group-hover:to-indigo-800/40 transition-all duration-300">
                     <img
-                      src={website.image_url}
+                      src={failedImages.has(website.image_url) ? '/logo.webp' : website.image_url}
                       alt={website.name}
                       className="h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-110"
+                      onError={() => {
+                        setFailedImages(prev => new Set(prev).add(website.image_url));
+                      }}
                     />
                   </div>
-                  <h3 className="text-sm font-semibold text-gray-800 dark:text-gray-200 text-center line-clamp-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-300">
+                  <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 text-center line-clamp-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-300">
                     {website.name}
                   </h3>
                 </div>

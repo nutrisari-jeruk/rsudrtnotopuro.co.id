@@ -1,33 +1,172 @@
 [
-  { "name": "RSUD R.T. NOTOPURO SIDOARJO", "url": "https://www.rsudnotopuro.co.id", "image_url": "/logo.webp" },
-  { "name": "Hospital Management System", "url": "https://example.com/hms", "image_url": "/logo.webp" },
-  { "name": "Patient Portal", "url": "https://example.com/patient", "image_url": "/logo.webp" },
-  { "name": "Laboratory System", "url": "https://example.com/lab", "image_url": "/logo.webp" },
-  { "name": "Radiology Portal", "url": "https://example.com/radiology", "image_url": "/logo.webp" },
-  { "name": "Pharmacy System", "url": "https://example.com/pharmacy", "image_url": "/logo.webp" },
-  { "name": "HR Management", "url": "https://example.com/hr", "image_url": "/logo.webp" },
-  { "name": "Finance System", "url": "https://example.com/finance", "image_url": "/logo.webp" },
-  { "name": "Inventory Management", "url": "https://example.com/inventory", "image_url": "/logo.webp" },
-  { "name": "Appointment Booking", "url": "https://example.com/appointment", "image_url": "/logo.webp" },
-  { "name": "Medical Records", "url": "https://example.com/records", "image_url": "/logo.webp" },
-  { "name": "Billing System", "url": "https://example.com/billing", "image_url": "/logo.webp" },
-  { "name": "Emergency Services", "url": "https://example.com/emergency", "image_url": "/logo.webp" },
-  { "name": "ICU Monitoring", "url": "https://example.com/icu", "image_url": "/logo.webp" },
-  { "name": "Surgery Scheduling", "url": "https://example.com/surgery", "image_url": "/logo.webp" },
-  { "name": "Outpatient Clinic", "url": "https://example.com/outpatient", "image_url": "/logo.webp" },
-  { "name": "Inpatient Management", "url": "https://example.com/inpatient", "image_url": "/logo.webp" },
-  { "name": "Blood Bank System", "url": "https://example.com/bloodbank", "image_url": "/logo.webp" },
-  { "name": "Donor Management", "url": "https://example.com/donor", "image_url": "/logo.webp" },
-  { "name": "Vaccination Portal", "url": "https://example.com/vaccination", "image_url": "/logo.webp" },
-  { "name": "Health Check System", "url": "https://example.com/healthcheck", "image_url": "/logo.webp" },
-  { "name": "Doctor Portal", "url": "https://example.com/doctor", "image_url": "/logo.webp" },
-  { "name": "Nurse Dashboard", "url": "https://example.com/nurse", "image_url": "/logo.webp" },
-  { "name": "Admin Panel", "url": "https://example.com/admin", "image_url": "/logo.webp" },
-  { "name": "Report Generator", "url": "https://example.com/reports", "image_url": "/logo.webp" },
-  { "name": "Analytics Dashboard", "url": "https://example.com/analytics", "image_url": "/logo.webp" },
-  { "name": "Mobile App API", "url": "https://example.com/api", "image_url": "/logo.webp" },
-  { "name": "Email Service", "url": "https://example.com/email", "image_url": "/logo.webp" },
-  { "name": "Notification System", "url": "https://example.com/notifications", "image_url": "/logo.webp" },
-  { "name": "Document Management", "url": "https://example.com/documents", "image_url": "/logo.webp" }
+  {
+    "name": "Billing",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/billing",
+    "image_url": "http://10.10.11.18/ImageRSD/Billing.png"
+  },
+  {
+    "name": "Anggaran",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/anggaran/",
+    "image_url": "http://10.10.11.18/ImageRSD/Anggaran.png"
+  },
+  {
+    "name": "Apotek",
+    "url": "http://farmasi.rsudrtnotopuro.co.id/farmasi/login",
+    "image_url": "http://10.10.11.18/ImageRSD/Farmasis.png"
+  },
+  {
+    "name": "SimFar",
+    "url": "https://simfar.rsudrtnotopuro.co.id/",
+    "image_url": "http://10.10.11.18/ImageRSD/E-resep.png"
+  },
+  {
+    "name": "E-Office",
+    "url": "https://eoffice.rsudrtnotopuro.co.id/admin/",
+    "image_url": "http://10.10.11.18/ImageRSD/E-office.png"
+  },
+  {
+    "name": "Keuangan",
+    "url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/login",
+    "image_url": "http://10.10.11.18/ImageRSD/Keuangan.png"
+  },
+  {
+    "name": "Santri",
+    "url": "https://santri.rsudrtnotopuro.co.id",
+    "image_url": "http://10.10.11.18/ImageRSD/Santri.jpg"
+  },
+  {
+    "name": "E-Kamar",
+    "url": "http://e-kamar.rsudrtnotopuro.co.id",
+    "image_url": "http://10.10.11.18/ImageRSD/E-Kamar.png"
+  },
+  {
+    "name": "Askep",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/askep/",
+    "image_url": "http://10.10.11.18/ImageRSD/Askep.png"
+  },
+  {
+    "name": "Bank Darah",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/bank_darah/",
+    "image_url": "http://10.10.11.18/ImageRSD/Bank-Darah.png"
+  },
+  {
+    "name": "PayRoll",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/payroll/",
+    "image_url": "http://10.10.11.18/ImageRSD/Payroll.png"
+  },
+  {
+    "name": "Remics",
+    "url": "https://remics.rsudrtnotopuro.co.id/remics",
+    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
+  },
+  {
+    "name": "SDM",
+    "url": "http://sdm.rsudrtnotopuro.co.id/simrs/sdm/",
+    "image_url": "http://10.10.11.18/ImageRSD/SDM.png"
+  },
+  {
+    "name": "Simpen",
+    "url": "https://simpen.rsudrtnotopuro.co.id/login",
+    "image_url": "http://10.10.11.18/ImageRSD/Simpen.png"
+  },
+  {
+    "name": "Diklit",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/diklit",
+    "image_url": "http://10.10.11.18/ImageRSD/Pendidikan.png"
+  },
+  {
+    "name": "Ekspedisi",
+    "url": "http://app.rsudrtnotopuro.co.id/ekspedisi_berkas/login",
+    "image_url": "http://10.10.11.18/ImageRSD/Ekspedisi.png"
+  },
+  {
+    "name": "Gizi",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/gizi/",
+    "image_url": "http://10.10.11.18/ImageRSD/Gizi.png"
+  },
+  {
+    "name": "Sioko",
+    "url": "https://sioko.rsudrtnotopuro.co.id/",
+    "image_url": "http://10.10.11.18/ImageRSD/Oprasi.jpg"
+  },
+  {
+    "name": "Hukum",
+    "url": "http://hukum.rsudrtnotopuro.co.id/humas/",
+    "image_url": "http://10.10.11.18/ImageRSD/Humas.png"
+  },
+  {
+    "name": "Kerjasama",
+    "url": "http://pemasaran.rsudrtnotopuro.co.id/pemasaran/",
+    "image_url": "http://10.10.11.18/ImageRSD/Pemasaran.png"
+  },
+  {
+    "name": "Mutu",
+    "url": "http://app.rsudrtnotopuro.co.id/mutu/login",
+    "image_url": "http://10.10.11.18/ImageRSD/Mutu.png"
+  },
+  {
+    "name": "PPI",
+    "url": "http://app.rsudrtnotopuro.co.id/ppi/login",
+    "image_url": "http://10.10.11.18/ImageRSD/PPI.png"
+  },
+  {
+    "name": "RM",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/rm",
+    "image_url": "https://img1.pngdownload.id/20180701/ewy/kisspng-document-statistics-medical-record-information-cli-medical-records-5b38aaad0f1752.8962892215304403650618.jpg"
+  },
+  {
+    "name": "Inventory dan Manajemen Aset",
+    "url": "https://as-in.rsudrtnotopuro.co.id/aset/",
+    "image_url": "https://as-in.rsudsidoarjo.co.id/aset/assets/img/inventori.png"
+  },
+  {
+    "name": "Billling 2013",
+    "url": "http://10.10.1.10/simrs/billing",
+    "image_url": "http://10.10.11.18/ImageRSD/Billing.png"
+  },
+  {
+    "name": "Lapor OM!",
+    "url": "https://assist.rsudrtnotopuro.co.id/",
+    "image_url": "https://superawesomevectors.com/wp-content/uploads/2016/07/call-center-operator-flat-vector-icon-800x566.jpg"
+  },
+  {
+    "name": "SIPA",
+    "url": "https://sipa.rsudrtnotopuro.co.id/sipa",
+    "image_url": "https://sipa.rsudsidoarjo.co.id/sipa/img/Perencanaan.png"
+  },
+  {
+    "name": "SSO",
+    "url": "https://sso.rsudrtnotopuro.co.id/SSO/Login",
+    "image_url": "https://lh4.googleusercontent.com/-seq3FsbhNYU/AAAAAAAAAAI/AAAAAAAAAAA/cFv5LQFQP8g/s44-p-k-no-ns-nd/photo.jpg"
+  },
+  {
+    "name": "SIMANEIS",
+    "url": "https://simaneis.rsudrtnotopuro.co.id/",
+    "image_url": "https://simaneis.rsudsidoarjo.co.id/assets/img/logo.png"
+  },
+  {
+    "name": "CSSD",
+    "url": "http://cssd.rsudrtnotopuro.co.id/cssd/login_sso",
+    "image_url": "http://cssd.rsudsidoarjo.co.id/cssd/assets/img/logo_sterilization.png"
+  },
+  {
+    "name": "Culiner",
+    "url": "https://cuti-online.rsudrtnotopuro.co.id/cuti_online/login",
+    "image_url": "http://10.10.11.18/ImageRSD/Culiner.png"
+  },
+  {
+    "name": "Simmas",
+    "url": "https://simmas.rsudrtnotopuro.co.id/admin/user-management/auth/login",
+    "image_url": "/logo.webp"
+  },
+  {
+    "name": "E H R",
+    "url": "https://rme.rsudrtnotopuro.co.id/EHR/Login",
+    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
+  },
+  {
+    "name": "ILP",
+    "url": "https://ilp.rsudrtnotopuro.co.id/ilp/login_sso",
+    "image_url": "http://keuangan.rsudsidoarjo.co.id/keuangan/assets/img/logo_finance.png"
+  }
 ]
-
