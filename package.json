@@ -1,5 +1,13 @@
 {
-  "name": "app-portal",
+  "name": "Portal Aplikasi",
+  "description": "Portal Aplikasi RSUD R.T. Notopuro Sidoarjo",
+  "author": "RSUD R.T. Notopuro Sidoarjo",
+  "license": "MIT",
+  "homepage": "https://rsudrtnotopuro.co.id",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rsudnotopuro/app-portal.git"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
