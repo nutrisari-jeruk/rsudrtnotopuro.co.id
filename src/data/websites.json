@@ -15,9 +15,29 @@
     "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
   },
   {
-    "name": "Anggaran",
-    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/anggaran/",
-    "image_url": "http://10.10.11.18/ImageRSD/Anggaran.png"
+    "name": "Santri",
+    "url": "https://santri.rsudrtnotopuro.co.id",
+    "image_url": "http://10.10.11.18/ImageRSD/Santri.jpg"
+  },
+  {
+    "name": "Culiner",
+    "url": "https://cuti-online.rsudrtnotopuro.co.id/cuti_online/login",
+    "image_url": "http://10.10.11.18/ImageRSD/Culiner.png"
+  },
+  {
+    "name": "SIPA",
+    "url": "https://sipa.rsudrtnotopuro.co.id/sipa",
+    "image_url": "https://sipa.rsudrtnotopuro.co.id/sipa/img/Perencanaan.png"
+  },
+  {
+    "name": "SSO",
+    "url": "https://sso.rsudrtnotopuro.co.id/SSO/Login",
+    "image_url": "https://lh4.googleusercontent.com/-seq3FsbhNYU/AAAAAAAAAAI/AAAAAAAAAAA/cFv5LQFQP8g/s44-p-k-no-ns-nd/photo.jpg"
+  },
+  {
+    "name": "Inventory dan Manajemen Aset",
+    "url": "https://as-in.rsudrtnotopuro.co.id/aset/",
+    "image_url": "https://as-in.rsudrtnotopuro.co.id/aset/assets/img/inventori.png"
   },
   {
     "name": "Apotek",
@@ -30,6 +50,11 @@
     "image_url": "http://10.10.11.18/ImageRSD/E-resep.png"
   },
   {
+    "name": "Anggaran",
+    "url": "http://simrs.rsudrtnotopuro.co.id/simrs/anggaran/",
+    "image_url": "http://10.10.11.18/ImageRSD/Anggaran.png"
+  },
+  {
     "name": "E-Office",
     "url": "https://eoffice.rsudrtnotopuro.co.id/admin/",
     "image_url": "http://10.10.11.18/ImageRSD/E-office.png"
@@ -38,11 +63,6 @@
     "name": "Keuangan",
     "url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/login",
     "image_url": "http://10.10.11.18/ImageRSD/Keuangan.png"
-  },
-  {
-    "name": "Santri",
-    "url": "https://santri.rsudrtnotopuro.co.id",
-    "image_url": "http://10.10.11.18/ImageRSD/Santri.jpg"
   },
   {
     "name": "E-Kamar",
@@ -120,32 +140,12 @@
     "image_url": "https://img1.pngdownload.id/20180701/ewy/kisspng-document-statistics-medical-record-information-cli-medical-records-5b38aaad0f1752.8962892215304403650618.jpg"
   },
   {
-    "name": "Inventory dan Manajemen Aset",
-    "url": "https://as-in.rsudrtnotopuro.co.id/aset/",
-    "image_url": "https://as-in.rsudrtnotopuro.co.id/aset/assets/img/inventori.png"
-  },
-  {
-    "name": "Billling 2013",
-    "url": "http://10.10.1.10/simrs/billing",
-    "image_url": "http://10.10.11.18/ImageRSD/Billing.png"
-  },
-  {
     "name": "Lapor OM!",
     "url": "https://assist.rsudrtnotopuro.co.id/",
     "image_url": "https://superawesomevectors.com/wp-content/uploads/2016/07/call-center-operator-flat-vector-icon-800x566.jpg"
   },
   {
-    "name": "SIPA",
-    "url": "https://sipa.rsudrtnotopuro.co.id/sipa",
-    "image_url": "https://sipa.rsudrtnotopuro.co.id/sipa/img/Perencanaan.png"
-  },
-  {
-    "name": "SSO",
-    "url": "https://sso.rsudrtnotopuro.co.id/SSO/Login",
-    "image_url": "https://lh4.googleusercontent.com/-seq3FsbhNYU/AAAAAAAAAAI/AAAAAAAAAAA/cFv5LQFQP8g/s44-p-k-no-ns-nd/photo.jpg"
-  },
-  {
-    "name": "SIMANEIS",
+    "name": "SIMANIES",
     "url": "https://simaneis.rsudrtnotopuro.co.id/",
     "image_url": "https://simaneis.rsudrtnotopuro.co.id/assets/img/logo.png"
   },
@@ -153,11 +153,6 @@
     "name": "CSSD",
     "url": "http://cssd.rsudrtnotopuro.co.id/cssd/login_sso",
     "image_url": "http://cssd.rsudrtnotopuro.co.id/cssd/assets/img/logo_sterilization.png"
-  },
-  {
-    "name": "Culiner",
-    "url": "https://cuti-online.rsudrtnotopuro.co.id/cuti_online/login",
-    "image_url": "http://10.10.11.18/ImageRSD/Culiner.png"
   },
   {
     "name": "Simmas",
@@ -168,5 +163,10 @@
     "name": "ILP",
     "url": "https://ilp.rsudrtnotopuro.co.id/ilp/login_sso",
     "image_url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/assets/img/logo_finance.png"
+  },
+  {
+    "name": "Billling 2013",
+    "url": "http://10.10.1.10/simrs/billing",
+    "image_url": "http://10.10.11.18/ImageRSD/Billing.png"
   }
 ]

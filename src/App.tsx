@@ -53,13 +53,13 @@ function App() {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
                 RSUD R.T. NOTOPURO SIDOARJO
               </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Application Portal</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Portal Aplikasi</p>
             </div>
             <div className="relative w-64 md:w-80">
               <input
                 ref={searchInputRef}
                 type="text"
-                placeholder="Search"
+                placeholder="Cari Aplikasi"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full px-4 py-2 pl-10 pr-28 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-200"
