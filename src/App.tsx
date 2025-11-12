@@ -307,7 +307,7 @@ function App() {
                       type="button"
                       onMouseDown={(event) => event.preventDefault()}
                       onClick={handleClearRecentSearches}
-                      className="text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                      className="cursor-pointer text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
                     >
                       Clear
                     </button>
@@ -367,14 +367,14 @@ function App() {
           <section className="mb-10">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                Recently opened
+                Baru saja dibuka
               </h2>
               <button
                 type="button"
                 onClick={handleClearRecentOpened}
-                className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                className="cursor-pointer text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
               >
-                Clear history
+                Hapus riwayat
               </button>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
