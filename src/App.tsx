@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import { useDarkMode } from './hooks/useDarkMode';
 import websitesData from './data/websites.json';
@@ -17,6 +17,48 @@ const RECENT_SEARCH_LIMIT = 8;
 const RECENT_OPENED_LIMIT = 6;
 
 type StoredWebsite = Pick<Website, 'name' | 'url' | 'image_url'>;
+
+type SectionIntroProps = {
+  badgeLabel: string;
+  badgeIcon: ReactNode;
+  title: string;
+  description: string;
+  actionLabel?: string;
+  onAction?: () => void;
+};
+
+const SectionIntro = ({
+  badgeLabel,
+  badgeIcon,
+  title,
+  description,
+  actionLabel,
+  onAction,
+}: SectionIntroProps) => (
+  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-6 mb-5">
+    <div>
+      <div className="inline-flex items-center gap-2 rounded-full bg-white/80 dark:bg-slate-900/60 px-3 py-1 text-[11px] font-semibold uppercase tracking-wide text-blue-700 dark:text-blue-300 shadow-sm">
+        {badgeIcon}
+        <span>{badgeLabel}</span>
+      </div>
+      <h2 className="mt-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
+        {title}
+      </h2>
+      <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        {description}
+      </p>
+    </div>
+    {actionLabel && onAction && (
+      <button
+        type="button"
+        onClick={onAction}
+        className="self-start cursor-pointer text-sm font-medium text-blue-700 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+      >
+        {actionLabel}
+      </button>
+    )}
+  </div>
+);
 
 const readStoredSearches = (): string[] => {
   if (typeof window === 'undefined') {
@@ -364,54 +406,71 @@ function App() {
 
       <main className="max-w-7xl mx-auto px-6 py-8">
         {hasRecentOpenedApps && (
-          <section className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                Baru saja dibuka
-              </h2>
-              <button
-                type="button"
-                onClick={handleClearRecentOpened}
-                className="cursor-pointer text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                Hapus riwayat
-              </button>
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-              {recentOpenedWebsites.map(recentWebsite => (
-                <a
-                  key={`${recentWebsite.url}-recent`}
-                  href={recentWebsite.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => addRecentOpened(recentWebsite)}
-                  onAuxClick={(event) => {
-                    if (event.button === 1) {
-                      addRecentOpened(recentWebsite);
-                    }
-                  }}
-                  className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-slate-700/50 p-5 flex flex-col items-center justify-center min-h-[140px] transition-all duration-300 hover:-translate-y-1 hover:border-blue-300/50 dark:hover:border-blue-500/50"
-                >
-                  <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-blue-200/70 dark:group-hover:border-blue-500/50 transition-colors duration-300" />
-                  <div className="relative z-10 flex flex-col items-center gap-3 w-full">
-                    <div className="p-3 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30">
-                      <img
-                        src={failedImages.has(recentWebsite.image_url) ? '/logo.webp' : recentWebsite.image_url}
-                        alt={recentWebsite.name}
-                        className="h-10 w-auto object-contain"
-                        onError={() => {
-                          setFailedImages(prev => new Set(prev).add(recentWebsite.image_url));
-                        }}
-                      />
+          <section className="mb-12">
+            <div className="rounded-2xl border border-blue-100/60 dark:border-slate-700/60 bg-blue-50/60 dark:bg-slate-800/70 shadow-sm p-6">
+              <SectionIntro
+                badgeLabel="Baru saja dibuka"
+                badgeIcon={
+                  <svg
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 6v6l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                }
+                title="Aplikasi yang terakhir Anda akses untuk dibuka kembali dengan cepat."
+                description=""
+                actionLabel="Hapus riwayat"
+                onAction={handleClearRecentOpened}
+              />
+              <div className="flex gap-4 overflow-x-auto pb-2">
+                {recentOpenedWebsites.map(recentWebsite => (
+                  <a
+                    key={`${recentWebsite.url}-recent`}
+                    href={recentWebsite.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => addRecentOpened(recentWebsite)}
+                    onAuxClick={(event) => {
+                      if (event.button === 1) {
+                        addRecentOpened(recentWebsite);
+                      }
+                    }}
+                    className="group relative mt-1 bg-white/90 dark:bg-slate-900/70 backdrop-blur-sm rounded-xl border border-blue-100/60 dark:border-slate-700/60 p-4 flex min-w-[180px] flex-col items-center justify-center transition-all duration-300 hover:-translate-y-1 hover:border-blue-300/60 dark:hover:border-blue-500/60"
+                    >
+                    <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-blue-200/70 dark:group-hover:border-blue-500/50 transition-colors duration-300" />
+                    <div className="relative z-10 flex flex-col items-center gap-3 w-full">
+                      <div className="p-2.5 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/40 dark:to-indigo-900/30">
+                        <img
+                          src={failedImages.has(recentWebsite.image_url) ? '/logo.webp' : recentWebsite.image_url}
+                          alt={recentWebsite.name}
+                          className="h-9 w-auto object-contain"
+                          onError={() => {
+                            setFailedImages(prev => new Set(prev).add(recentWebsite.image_url));
+                          }}
+                        />
+                      </div>
+                      <h3 className="text-base font-semibold text-gray-800 dark:text-gray-100 text-center line-clamp-2 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors duration-300">
+                        {recentWebsite.name}
+                      </h3>
                     </div>
-                    <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 text-center line-clamp-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-300">
-                      {recentWebsite.name}
-                    </h3>
-                  </div>
-                </a>
-              ))}
+                  </a>
+                ))}
+              </div>
             </div>
           </section>
+        )}
+        {hasRecentOpenedApps && filteredWebsites.length > 0 && (
+          <div className="relative mb-10">
+            <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent dark:via-slate-600" />
+          </div>
         )}
         {filteredWebsites.length === 0 ? (
           <div className="text-center py-12">
