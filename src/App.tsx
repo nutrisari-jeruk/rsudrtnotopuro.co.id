@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { useDarkMode } from './hooks/useDarkMode';
 import websitesData from './data/websites.json';
@@ -15,10 +15,26 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
   const { isDark, toggle } = useDarkMode();
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const filteredWebsites = websites.filter(website =>
     website.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        searchInputRef.current?.focus({ preventScroll: true });
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
@@ -38,11 +54,12 @@ function App() {
             </div>
             <div className="relative w-64 md:w-80">
               <input
+                ref={searchInputRef}
                 type="text"
-                placeholder="Search by app name..."
+                placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 pl-10 pr-4 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-200"
+                className="w-full px-4 py-2 pl-10 pr-28 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-200"
               />
               <svg
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500"
@@ -57,6 +74,21 @@ function App() {
                   d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                 />
               </svg>
+              <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 text-xs text-gray-400 dark:text-gray-500">
+                <kbd className="rounded border border-gray-200 dark:border-slate-600 bg-white/60 dark:bg-slate-800/60 px-1.5 py-0.5 font-medium shadow-sm">
+                  Ctrl
+                </kbd>
+                <kbd className="rounded border border-gray-200 dark:border-slate-600 bg-white/60 dark:bg-slate-800/60 px-1.5 py-0.5 font-medium shadow-sm">
+                  K
+                </kbd>
+                <span className="mx-1 text-gray-300 dark:text-slate-600">/</span>
+                <kbd className="rounded border border-gray-200 dark:border-slate-600 bg-white/60 dark:bg-slate-800/60 px-1.5 py-0.5 font-medium shadow-sm">
+                  ⌘
+                </kbd>
+                <kbd className="rounded border border-gray-200 dark:border-slate-600 bg-white/60 dark:bg-slate-800/60 px-1.5 py-0.5 font-medium shadow-sm">
+                  K
+                </kbd>
+              </div>
             </div>
             <button
               onClick={toggle}
