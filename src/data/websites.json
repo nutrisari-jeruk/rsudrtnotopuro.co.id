@@ -5,6 +5,16 @@
     "image_url": "http://10.10.11.18/ImageRSD/Billing.png"
   },
   {
+    "name": "E H R",
+    "url": "https://rme.rsudrtnotopuro.co.id/EHR/Login",
+    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
+  },
+  {
+    "name": "Remics",
+    "url": "https://remics.rsudrtnotopuro.co.id/remics",
+    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
+  },
+  {
     "name": "Anggaran",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/anggaran/",
     "image_url": "http://10.10.11.18/ImageRSD/Anggaran.png"
@@ -53,11 +63,6 @@
     "name": "PayRoll",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/payroll/",
     "image_url": "http://10.10.11.18/ImageRSD/Payroll.png"
-  },
-  {
-    "name": "Remics",
-    "url": "https://remics.rsudrtnotopuro.co.id/remics",
-    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
   },
   {
     "name": "SDM",
@@ -117,7 +122,7 @@
   {
     "name": "Inventory dan Manajemen Aset",
     "url": "https://as-in.rsudrtnotopuro.co.id/aset/",
-    "image_url": "https://as-in.rsudsidoarjo.co.id/aset/assets/img/inventori.png"
+    "image_url": "https://as-in.rsudrtnotopuro.co.id/aset/assets/img/inventori.png"
   },
   {
     "name": "Billling 2013",
@@ -132,7 +137,7 @@
   {
     "name": "SIPA",
     "url": "https://sipa.rsudrtnotopuro.co.id/sipa",
-    "image_url": "https://sipa.rsudsidoarjo.co.id/sipa/img/Perencanaan.png"
+    "image_url": "https://sipa.rsudrtnotopuro.co.id/sipa/img/Perencanaan.png"
   },
   {
     "name": "SSO",
@@ -142,12 +147,12 @@
   {
     "name": "SIMANEIS",
     "url": "https://simaneis.rsudrtnotopuro.co.id/",
-    "image_url": "https://simaneis.rsudsidoarjo.co.id/assets/img/logo.png"
+    "image_url": "https://simaneis.rsudrtnotopuro.co.id/assets/img/logo.png"
   },
   {
     "name": "CSSD",
     "url": "http://cssd.rsudrtnotopuro.co.id/cssd/login_sso",
-    "image_url": "http://cssd.rsudsidoarjo.co.id/cssd/assets/img/logo_sterilization.png"
+    "image_url": "http://cssd.rsudrtnotopuro.co.id/cssd/assets/img/logo_sterilization.png"
   },
   {
     "name": "Culiner",
@@ -160,13 +165,8 @@
     "image_url": "/logo.webp"
   },
   {
-    "name": "E H R",
-    "url": "https://rme.rsudrtnotopuro.co.id/EHR/Login",
-    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
-  },
-  {
     "name": "ILP",
     "url": "https://ilp.rsudrtnotopuro.co.id/ilp/login_sso",
-    "image_url": "http://keuangan.rsudsidoarjo.co.id/keuangan/assets/img/logo_finance.png"
+    "image_url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/assets/img/logo_finance.png"
   }
 ]

@@ -41,11 +41,14 @@ function App() {
       <header className="sticky top-0 backdrop-blur-lg bg-white/80 dark:bg-slate-900/80 border-b border-gray-200/50 dark:border-slate-700/50 shadow-sm z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center gap-4">
-            <img 
-              src="/logo.svg" 
-              alt="RSUD R.T. NOTOPURO SIDOARJO Logo" 
-              className="h-14 w-auto drop-shadow-sm" 
-            />
+            <a href="/">
+              <img
+                src="/logo.svg"
+                alt="RSUD R.T. NOTOPURO SIDOARJO Logo"
+                className="h-14 w-auto drop-shadow-sm"
+              />
+            </a>
+
             <div className="flex-1">
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
                 RSUD R.T. NOTOPURO SIDOARJO
@@ -98,9 +101,8 @@ function App() {
               aria-checked={isDark}
             >
               <span
-                className={`inline-flex h-6 w-6 items-center justify-center rounded-full bg-white dark:bg-slate-900 shadow-lg transform transition-transform duration-200 ${
-                  isDark ? 'translate-x-9' : 'translate-x-1'
-                }`}
+                className={`inline-flex h-6 w-6 items-center justify-center rounded-full bg-white dark:bg-slate-900 shadow-lg transform transition-transform duration-200 ${isDark ? 'translate-x-9' : 'translate-x-1'
+                  }`}
               >
                 {isDark ? (
                   <svg className="h-4 w-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +118,7 @@ function App() {
           </div>
         </div>
       </header>
-      
+
       <main className="max-w-7xl mx-auto px-6 py-8">
         {filteredWebsites.length === 0 ? (
           <div className="text-center py-12">
