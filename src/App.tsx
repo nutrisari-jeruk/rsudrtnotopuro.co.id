@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './App.css';
 import { useDarkMode } from './hooks/useDarkMode';
 import websitesData from './data/websites.json';
@@ -11,15 +11,187 @@ type Website = {
 
 const websites: Website[] = websitesData as Website[];
 
+const RECENT_SEARCH_STORAGE_KEY = 'appPortalRecentSearches';
+const RECENT_OPENED_STORAGE_KEY = 'appPortalRecentOpened';
+const RECENT_SEARCH_LIMIT = 8;
+const RECENT_OPENED_LIMIT = 6;
+
+type StoredWebsite = Pick<Website, 'name' | 'url' | 'image_url'>;
+
+const readStoredSearches = (): string[] => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+
+  try {
+    const raw = window.localStorage.getItem(RECENT_SEARCH_STORAGE_KEY);
+    if (!raw) {
+      return [];
+    }
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed.filter(item => typeof item === 'string');
+    }
+    return [];
+  } catch (error) {
+    console.error('Failed to parse recent searches from storage', error);
+    return [];
+  }
+};
+
+const readStoredOpenedApps = (): StoredWebsite[] => {
+  if (typeof window === 'undefined') {
+    return [];
+  }
+
+  try {
+    const raw = window.localStorage.getItem(RECENT_OPENED_STORAGE_KEY);
+    if (!raw) {
+      return [];
+    }
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) {
+      return parsed.filter(
+        (item): item is StoredWebsite =>
+          typeof item?.name === 'string' &&
+          typeof item?.url === 'string' &&
+          typeof item?.image_url === 'string'
+      );
+    }
+    return [];
+  } catch (error) {
+    console.error('Failed to parse recently opened apps from storage', error);
+    return [];
+  }
+};
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+  const [recentSearches, setRecentSearches] = useState<string[]>(readStoredSearches);
+  const [recentOpenedApps, setRecentOpenedApps] = useState<StoredWebsite[]>(readStoredOpenedApps);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [activeSearchIndex, setActiveSearchIndex] = useState<number>(-1);
   const { isDark, toggle } = useDarkMode();
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const blurTimeoutRef = useRef<number | null>(null);
 
   const filteredWebsites = websites.filter(website =>
     website.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const hasRecentSearches = recentSearches.length > 0;
+  const hasRecentOpenedApps = recentOpenedApps.length > 0;
+
+  const recentOpenedWebsites = useMemo(() => {
+    if (!hasRecentOpenedApps) {
+      return [];
+    }
+
+    const knownWebsitesByUrl = new Map(websites.map(site => [site.url, site]));
+
+    return recentOpenedApps.map(item => knownWebsitesByUrl.get(item.url) ?? item);
+  }, [hasRecentOpenedApps, recentOpenedApps]);
+
+  const addRecentSearch = useCallback((query: string) => {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery) {
+      return;
+    }
+
+    setRecentSearches(prev => {
+      const next = [trimmedQuery, ...prev.filter(item => item.toLowerCase() !== trimmedQuery.toLowerCase())];
+      return next.slice(0, RECENT_SEARCH_LIMIT);
+    });
+  }, []);
+
+  const handleClearRecentSearches = useCallback(() => {
+    setRecentSearches([]);
+    setActiveSearchIndex(-1);
+  }, []);
+
+  const addRecentOpened = useCallback((website: Website | StoredWebsite) => {
+    const storedWebsite: StoredWebsite = {
+      name: website.name,
+      url: website.url,
+      image_url: website.image_url,
+    };
+
+    setRecentOpenedApps(prev => {
+      const next = [
+        storedWebsite,
+        ...prev.filter(item => item.url !== storedWebsite.url)
+      ];
+      return next.slice(0, RECENT_OPENED_LIMIT);
+    });
+  }, []);
+
+  const handleClearRecentOpened = useCallback(() => {
+    setRecentOpenedApps([]);
+  }, []);
+
+  const handleSelectRecentSearch = useCallback((query: string) => {
+    setSearchQuery(query);
+    addRecentSearch(query);
+    setIsSearchFocused(false);
+    setActiveSearchIndex(-1);
+  }, [addRecentSearch]);
+
+  const handleSearchKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!hasRecentSearches) {
+      if (event.key === 'Enter') {
+        addRecentSearch(searchQuery);
+      }
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActiveSearchIndex(prev => {
+        const nextIndex = prev + 1;
+        return nextIndex >= recentSearches.length ? 0 : nextIndex;
+      });
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActiveSearchIndex(prev => {
+        if (prev === -1) {
+          return recentSearches.length - 1;
+        }
+        const nextIndex = prev - 1;
+        return nextIndex < 0 ? recentSearches.length - 1 : nextIndex;
+      });
+      return;
+    }
+
+    if (event.key === 'Enter') {
+      const selectedQuery =
+        activeSearchIndex >= 0 && activeSearchIndex < recentSearches.length
+          ? recentSearches[activeSearchIndex]
+          : searchQuery;
+
+      addRecentSearch(selectedQuery);
+      setSearchQuery(selectedQuery);
+      setIsSearchFocused(false);
+      setActiveSearchIndex(-1);
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      setIsSearchFocused(false);
+      setActiveSearchIndex(-1);
+      return;
+    }
+  }, [activeSearchIndex, addRecentSearch, hasRecentSearches, recentSearches, searchQuery]);
+  useEffect(() => {
+    return () => {
+      if (blurTimeoutRef.current) {
+        window.clearTimeout(blurTimeoutRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -35,6 +207,24 @@ function App() {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem(RECENT_SEARCH_STORAGE_KEY, JSON.stringify(recentSearches));
+  }, [recentSearches]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem(RECENT_OPENED_STORAGE_KEY, JSON.stringify(recentOpenedApps));
+  }, [recentOpenedApps]);
+
+  useEffect(() => {
+    setActiveSearchIndex(-1);
+  }, [searchQuery, isSearchFocused]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
@@ -62,6 +252,21 @@ function App() {
                 placeholder="Cari Aplikasi"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
+                onFocus={() => {
+                  if (blurTimeoutRef.current) {
+                    window.clearTimeout(blurTimeoutRef.current);
+                  }
+                  setIsSearchFocused(true);
+                }}
+                onBlur={() => {
+                  if (blurTimeoutRef.current) {
+                    window.clearTimeout(blurTimeoutRef.current);
+                  }
+                  blurTimeoutRef.current = window.setTimeout(() => {
+                    setIsSearchFocused(false);
+                  }, 120);
+                }}
+                onKeyDown={handleSearchKeyDown}
                 className="w-full px-4 py-2 pl-10 pr-28 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-gray-200 dark:border-slate-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent text-gray-700 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 transition-all duration-200"
               />
               <svg
@@ -92,6 +297,44 @@ function App() {
                   K
                 </kbd>
               </div>
+              {isSearchFocused && hasRecentSearches && (
+                <div className="absolute z-50 mt-2 w-full rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg overflow-hidden">
+                  <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 dark:border-slate-700">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-slate-400">
+                      Recent searches
+                    </span>
+                    <button
+                      type="button"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={handleClearRecentSearches}
+                      className="text-xs font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                  <ul className="max-h-64 overflow-y-auto py-1">
+                    {recentSearches.map((recentQuery, index) => {
+                      const isActive = index === activeSearchIndex;
+                      return (
+                        <li key={recentQuery}>
+                          <button
+                            type="button"
+                            onMouseDown={(event) => event.preventDefault()}
+                            onClick={() => handleSelectRecentSearch(recentQuery)}
+                            className={`w-full text-left px-4 py-2 text-sm transition-colors duration-150 ${
+                              isActive
+                                ? 'bg-blue-50 text-blue-700 dark:bg-slate-700 dark:text-blue-300'
+                                : 'text-gray-700 hover:bg-gray-50 dark:text-gray-200 dark:hover:bg-slate-700/60'
+                            }`}
+                          >
+                            {recentQuery}
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
             </div>
             <button
               onClick={toggle}
@@ -120,6 +363,56 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8">
+        {hasRecentOpenedApps && (
+          <section className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+                Recently opened
+              </h2>
+              <button
+                type="button"
+                onClick={handleClearRecentOpened}
+                className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+              >
+                Clear history
+              </button>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+              {recentOpenedWebsites.map(recentWebsite => (
+                <a
+                  key={`${recentWebsite.url}-recent`}
+                  href={recentWebsite.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => addRecentOpened(recentWebsite)}
+                  onAuxClick={(event) => {
+                    if (event.button === 1) {
+                      addRecentOpened(recentWebsite);
+                    }
+                  }}
+                  className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl border border-gray-200/50 dark:border-slate-700/50 p-5 flex flex-col items-center justify-center min-h-[140px] transition-all duration-300 hover:-translate-y-1 hover:border-blue-300/50 dark:hover:border-blue-500/50"
+                >
+                  <div className="absolute inset-0 rounded-xl border border-transparent group-hover:border-blue-200/70 dark:group-hover:border-blue-500/50 transition-colors duration-300" />
+                  <div className="relative z-10 flex flex-col items-center gap-3 w-full">
+                    <div className="p-3 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30">
+                      <img
+                        src={failedImages.has(recentWebsite.image_url) ? '/logo.webp' : recentWebsite.image_url}
+                        alt={recentWebsite.name}
+                        className="h-10 w-auto object-contain"
+                        onError={() => {
+                          setFailedImages(prev => new Set(prev).add(recentWebsite.image_url));
+                        }}
+                      />
+                    </div>
+                    <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 text-center line-clamp-2 group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-300">
+                      {recentWebsite.name}
+                    </h3>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        )}
         {filteredWebsites.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 dark:text-gray-400 text-lg">No apps found matching "{searchQuery}"</p>
@@ -132,6 +425,12 @@ function App() {
                 key={website.name}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => addRecentOpened(website)}
+                onAuxClick={(event) => {
+                  if (event.button === 1) {
+                    addRecentOpened(website);
+                  }
+                }}
                 className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-sm hover:shadow-xl border border-gray-200/50 dark:border-slate-700/50 p-6 flex flex-col items-center justify-center min-h-[160px] transition-all duration-300 hover:-translate-y-1 hover:border-blue-300/50 dark:hover:border-blue-500/50"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
