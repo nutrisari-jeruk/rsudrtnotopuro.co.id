@@ -7,6 +7,7 @@ type Website = {
   name: string;
   url: string;
   image_url: string;
+  categories: string[];
 };
 
 const websites: Website[] = websitesData as Website[];
@@ -15,10 +16,11 @@ const RECENT_SEARCH_STORAGE_KEY = 'appPortalRecentSearches';
 const RECENT_OPENED_STORAGE_KEY = 'appPortalRecentOpened';
 const SORT_ORDER_STORAGE_KEY = 'appPortalSortOrder';
 const VIEW_MODE_STORAGE_KEY = 'appPortalViewMode';
+const CATEGORY_FILTER_STORAGE_KEY = 'appPortalCategoryFilter';
 const RECENT_SEARCH_LIMIT = 8;
 const RECENT_OPENED_LIMIT = 6;
 
-type StoredWebsite = Pick<Website, 'name' | 'url' | 'image_url'>;
+type StoredWebsite = Pick<Website, 'name' | 'url' | 'image_url' | 'categories'>;
 
 type SectionIntroProps = {
   badgeLabel: string;
@@ -99,7 +101,8 @@ const readStoredOpenedApps = (): StoredWebsite[] => {
         (item): item is StoredWebsite =>
           typeof item?.name === 'string' &&
           typeof item?.url === 'string' &&
-          typeof item?.image_url === 'string'
+          typeof item?.image_url === 'string' &&
+          Array.isArray(item?.categories)
       );
     }
     return [];
@@ -143,6 +146,23 @@ const readStoredViewMode = (): 'grid' | 'list' => {
   }
 };
 
+const readStoredCategoryFilter = (): string | null => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    const raw = window.localStorage.getItem(CATEGORY_FILTER_STORAGE_KEY);
+    if (raw === null || raw === '') {
+      return null;
+    }
+    return raw;
+  } catch (error) {
+    console.error('Failed to parse category filter from storage', error);
+    return null;
+  }
+};
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
@@ -152,14 +172,21 @@ function App() {
   const [activeSearchIndex, setActiveSearchIndex] = useState<number>(-1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(readStoredSortOrder);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>(readStoredViewMode);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(readStoredCategoryFilter);
   const { isDark, toggle } = useDarkMode();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const blurTimeoutRef = useRef<number | null>(null);
 
   const filteredWebsites = useMemo(() => {
-    const filtered = websites.filter(website =>
+    let filtered = websites.filter(website =>
       website.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+    
+    if (selectedCategory !== null) {
+      filtered = filtered.filter(website =>
+        website.categories.includes(selectedCategory)
+      );
+    }
     
     return [...filtered].sort((a, b) => {
       const nameA = a.name.toLowerCase();
@@ -170,7 +197,7 @@ function App() {
         return nameB.localeCompare(nameA);
       }
     });
-  }, [searchQuery, sortOrder]);
+  }, [searchQuery, sortOrder, selectedCategory]);
 
   const hasRecentSearches = recentSearches.length > 0;
   const hasRecentOpenedApps = recentOpenedApps.length > 0;
@@ -207,6 +234,7 @@ function App() {
       name: website.name,
       url: website.url,
       image_url: website.image_url,
+      categories: website.categories,
     };
 
     setRecentOpenedApps(prev => {
@@ -327,6 +355,17 @@ function App() {
     }
     window.localStorage.setItem(VIEW_MODE_STORAGE_KEY, viewMode);
   }, [viewMode]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    if (selectedCategory === null) {
+      window.localStorage.removeItem(CATEGORY_FILTER_STORAGE_KEY);
+    } else {
+      window.localStorage.setItem(CATEGORY_FILTER_STORAGE_KEY, selectedCategory);
+    }
+  }, [selectedCategory]);
 
   useEffect(() => {
     setActiveSearchIndex(-1);
@@ -544,13 +583,94 @@ function App() {
             <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent dark:via-slate-600" />
           </div>
         )}
-        {filteredWebsites.length > 0 && (
+        {websites.length > 0 && (
           <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={() => setSelectedCategory(null)}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer ${
+                  selectedCategory === null
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 border border-gray-200/50 dark:border-slate-700/50'
+                }`}
+                aria-label="Show all categories"
+                aria-pressed={selectedCategory === null}
+              >
+                All
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('healthcare')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer ${
+                  selectedCategory === 'healthcare'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 border border-gray-200/50 dark:border-slate-700/50'
+                }`}
+                aria-label="Filter by healthcare"
+                aria-pressed={selectedCategory === 'healthcare'}
+              >
+                Healthcare
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('office')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer ${
+                  selectedCategory === 'office'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 border border-gray-200/50 dark:border-slate-700/50'
+                }`}
+                aria-label="Filter by office"
+                aria-pressed={selectedCategory === 'office'}
+              >
+                Office
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('finance')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer ${
+                  selectedCategory === 'finance'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 border border-gray-200/50 dark:border-slate-700/50'
+                }`}
+                aria-label="Filter by finance"
+                aria-pressed={selectedCategory === 'finance'}
+              >
+                Finance
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('asset management')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer ${
+                  selectedCategory === 'asset management'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 border border-gray-200/50 dark:border-slate-700/50'
+                }`}
+                aria-label="Filter by asset management"
+                aria-pressed={selectedCategory === 'asset management'}
+              >
+                Asset Management
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedCategory('other')}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer ${
+                  selectedCategory === 'other'
+                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-sm'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 border border-gray-200/50 dark:border-slate-700/50'
+                }`}
+                aria-label="Filter by other"
+                aria-pressed={selectedCategory === 'other'}
+              >
+                Other
+              </button>
+            </div>
+            {filteredWebsites.length > 0 && (
+            <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={handleToggleSort}
-                className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer"
                 title={sortOrder === 'asc' ? 'Sort A-Z' : 'Sort Z-A'}
                 aria-label={sortOrder === 'asc' ? 'Sort ascending' : 'Sort descending'}
               >
@@ -578,61 +698,46 @@ function App() {
                 </svg>
                 <span className="hidden sm:inline">{sortOrder === 'asc' ? 'A-Z' : 'Z-A'}</span>
               </button>
-            </div>
-            <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => handleSetViewMode('grid')}
-                className={`p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${
-                  viewMode === 'grid'
-                    ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700/60'
-                }`}
-                title="Grid view"
-                aria-label="Grid view"
-                aria-pressed={viewMode === 'grid'}
+                onClick={() => handleSetViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                className="p-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700/60 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 cursor-pointer"
+                title={viewMode === 'grid' ? 'Switch to list view' : 'Switch to grid view'}
+                aria-label={viewMode === 'grid' ? 'Switch to list view' : 'Switch to grid view'}
+                aria-pressed={false}
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                  />
-                </svg>
-              </button>
-              <button
-                type="button"
-                onClick={() => handleSetViewMode('list')}
-                className={`p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${
-                  viewMode === 'list'
-                    ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
-                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700/60'
-                }`}
-                title="List view"
-                aria-label="List view"
-                aria-pressed={viewMode === 'list'}
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
+                {viewMode === 'grid' ? (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    />
+                  </svg>
+                )}
               </button>
             </div>
+            )}
           </div>
         )}
         {filteredWebsites.length === 0 ? (

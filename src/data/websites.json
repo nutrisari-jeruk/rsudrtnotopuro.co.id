@@ -2,171 +2,205 @@
   {
     "name": "Billing",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/billing",
-    "image_url": "http://10.10.11.18/ImageRSD/Billing.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Billing.png",
+    "categories": ["healthcare", "finance"]
   },
   {
     "name": "E H R",
     "url": "https://rme.rsudrtnotopuro.co.id/EHR/Login",
-    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Remics.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "Remics",
     "url": "https://remics.rsudrtnotopuro.co.id/remics",
-    "image_url": "http://10.10.11.18/ImageRSD/Remics.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Remics.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "Santri",
     "url": "https://santri.rsudrtnotopuro.co.id",
-    "image_url": "http://10.10.11.18/ImageRSD/Santri.jpg"
+    "image_url": "http://10.10.11.18/ImageRSD/Santri.jpg",
+    "categories": ["other"]
   },
   {
     "name": "Culiner",
     "url": "https://cuti-online.rsudrtnotopuro.co.id/cuti_online/login",
-    "image_url": "http://10.10.11.18/ImageRSD/Culiner.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Culiner.png",
+    "categories": ["other"]
   },
   {
     "name": "SIPA",
     "url": "https://sipa.rsudrtnotopuro.co.id/sipa",
-    "image_url": "https://sipa.rsudrtnotopuro.co.id/sipa/img/Perencanaan.png"
+    "image_url": "https://sipa.rsudrtnotopuro.co.id/sipa/img/Perencanaan.png",
+    "categories": ["asset management"]
   },
   {
     "name": "SSO",
     "url": "https://sso.rsudrtnotopuro.co.id/SSO/Login",
-    "image_url": "https://lh4.googleusercontent.com/-seq3FsbhNYU/AAAAAAAAAAI/AAAAAAAAAAA/cFv5LQFQP8g/s44-p-k-no-ns-nd/photo.jpg"
+    "image_url": "https://lh4.googleusercontent.com/-seq3FsbhNYU/AAAAAAAAAAI/AAAAAAAAAAA/cFv5LQFQP8g/s44-p-k-no-ns-nd/photo.jpg",
+    "categories": ["office"]
   },
   {
     "name": "Inventory dan Manajemen Aset",
     "url": "https://as-in.rsudrtnotopuro.co.id/aset/",
-    "image_url": "https://as-in.rsudrtnotopuro.co.id/aset/assets/img/inventori.png"
+    "image_url": "https://as-in.rsudrtnotopuro.co.id/aset/assets/img/inventori.png",
+    "categories": ["asset management"]
   },
   {
     "name": "Apotek",
     "url": "http://farmasi.rsudrtnotopuro.co.id/farmasi/login",
-    "image_url": "http://10.10.11.18/ImageRSD/Farmasis.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Farmasis.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "SimFar",
     "url": "https://simfar.rsudrtnotopuro.co.id/",
-    "image_url": "http://10.10.11.18/ImageRSD/E-resep.png"
+    "image_url": "http://10.10.11.18/ImageRSD/E-resep.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "Anggaran",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/anggaran/",
-    "image_url": "http://10.10.11.18/ImageRSD/Anggaran.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Anggaran.png",
+    "categories": ["finance"]
   },
   {
     "name": "E-Office",
     "url": "https://eoffice.rsudrtnotopuro.co.id/admin/",
-    "image_url": "http://10.10.11.18/ImageRSD/E-office.png"
+    "image_url": "http://10.10.11.18/ImageRSD/E-office.png",
+    "categories": ["office"]
   },
   {
     "name": "Keuangan",
     "url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/login",
-    "image_url": "http://10.10.11.18/ImageRSD/Keuangan.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Keuangan.png",
+    "categories": ["finance"]
   },
   {
     "name": "E-Kamar",
     "url": "http://e-kamar.rsudrtnotopuro.co.id",
-    "image_url": "http://10.10.11.18/ImageRSD/E-Kamar.png"
+    "image_url": "http://10.10.11.18/ImageRSD/E-Kamar.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "Askep",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/askep/",
-    "image_url": "http://10.10.11.18/ImageRSD/Askep.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Askep.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "Bank Darah",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/bank_darah/",
-    "image_url": "http://10.10.11.18/ImageRSD/Bank-Darah.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Bank-Darah.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "PayRoll",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/payroll/",
-    "image_url": "http://10.10.11.18/ImageRSD/Payroll.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Payroll.png",
+    "categories": ["finance"]
   },
   {
     "name": "SDM",
     "url": "http://sdm.rsudrtnotopuro.co.id/simrs/sdm/",
-    "image_url": "http://10.10.11.18/ImageRSD/SDM.png"
+    "image_url": "http://10.10.11.18/ImageRSD/SDM.png",
+    "categories": ["office"]
   },
   {
     "name": "Simpen",
     "url": "https://simpen.rsudrtnotopuro.co.id/login",
-    "image_url": "http://10.10.11.18/ImageRSD/Simpen.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Simpen.png",
+    "categories": ["other"]
   },
   {
     "name": "Diklit",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/diklit",
-    "image_url": "http://10.10.11.18/ImageRSD/Pendidikan.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Pendidikan.png",
+    "categories": ["office"]
   },
   {
     "name": "Ekspedisi",
     "url": "http://app.rsudrtnotopuro.co.id/ekspedisi_berkas/login",
-    "image_url": "http://10.10.11.18/ImageRSD/Ekspedisi.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Ekspedisi.png",
+    "categories": ["office"]
   },
   {
     "name": "Gizi",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/gizi/",
-    "image_url": "http://10.10.11.18/ImageRSD/Gizi.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Gizi.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "Sioko",
     "url": "https://sioko.rsudrtnotopuro.co.id/",
-    "image_url": "http://10.10.11.18/ImageRSD/Oprasi.jpg"
+    "image_url": "http://10.10.11.18/ImageRSD/Oprasi.jpg",
+    "categories": ["healthcare"]
   },
   {
     "name": "Hukum",
     "url": "http://hukum.rsudrtnotopuro.co.id/humas/",
-    "image_url": "http://10.10.11.18/ImageRSD/Humas.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Humas.png",
+    "categories": ["office"]
   },
   {
     "name": "Kerjasama",
     "url": "http://pemasaran.rsudrtnotopuro.co.id/pemasaran/",
-    "image_url": "http://10.10.11.18/ImageRSD/Pemasaran.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Pemasaran.png",
+    "categories": ["office"]
   },
   {
     "name": "Mutu",
     "url": "http://app.rsudrtnotopuro.co.id/mutu/login",
-    "image_url": "http://10.10.11.18/ImageRSD/Mutu.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Mutu.png",
+    "categories": ["office"]
   },
   {
     "name": "PPI",
     "url": "http://app.rsudrtnotopuro.co.id/ppi/login",
-    "image_url": "http://10.10.11.18/ImageRSD/PPI.png"
+    "image_url": "http://10.10.11.18/ImageRSD/PPI.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "RM",
     "url": "http://simrs.rsudrtnotopuro.co.id/simrs/rm",
-    "image_url": "https://img1.pngdownload.id/20180701/ewy/kisspng-document-statistics-medical-record-information-cli-medical-records-5b38aaad0f1752.8962892215304403650618.jpg"
+    "image_url": "https://img1.pngdownload.id/20180701/ewy/kisspng-document-statistics-medical-record-information-cli-medical-records-5b38aaad0f1752.8962892215304403650618.jpg",
+    "categories": ["healthcare"]
   },
   {
     "name": "Lapor OM!",
     "url": "https://assist.rsudrtnotopuro.co.id/",
-    "image_url": "https://superawesomevectors.com/wp-content/uploads/2016/07/call-center-operator-flat-vector-icon-800x566.jpg"
+    "image_url": "https://superawesomevectors.com/wp-content/uploads/2016/07/call-center-operator-flat-vector-icon-800x566.jpg",
+    "categories": ["office"]
   },
   {
     "name": "SIMANIES",
     "url": "https://simaneis.rsudrtnotopuro.co.id/",
-    "image_url": "https://simaneis.rsudrtnotopuro.co.id/assets/img/logo.png"
+    "image_url": "https://simaneis.rsudrtnotopuro.co.id/assets/img/logo.png",
+    "categories": ["other"]
   },
   {
     "name": "CSSD",
     "url": "http://cssd.rsudrtnotopuro.co.id/cssd/login_sso",
-    "image_url": "http://cssd.rsudrtnotopuro.co.id/cssd/assets/img/logo_sterilization.png"
+    "image_url": "http://cssd.rsudrtnotopuro.co.id/cssd/assets/img/logo_sterilization.png",
+    "categories": ["healthcare"]
   },
   {
     "name": "Simmas",
     "url": "https://simmas.rsudrtnotopuro.co.id/admin/user-management/auth/login",
-    "image_url": "/logo.webp"
+    "image_url": "/logo.webp",
+    "categories": ["office"]
   },
   {
     "name": "ILP",
     "url": "https://ilp.rsudrtnotopuro.co.id/ilp/login_sso",
-    "image_url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/assets/img/logo_finance.png"
+    "image_url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/assets/img/logo_finance.png",
+    "categories": ["finance"]
   },
   {
     "name": "Billling 2013",
     "url": "http://10.10.1.10/simrs/billing",
-    "image_url": "http://10.10.11.18/ImageRSD/Billing.png"
+    "image_url": "http://10.10.11.18/ImageRSD/Billing.png",
+    "categories": ["healthcare", "finance"]
   }
 ]
