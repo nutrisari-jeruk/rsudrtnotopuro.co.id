@@ -644,7 +644,7 @@ function App() {
                 aria-label="Filter by healthcare"
                 aria-pressed={selectedCategory === 'healthcare'}
               >
-                Healthcare
+                Pelayanan Kesehatan
               </button>
               <button
                 type="button"
@@ -657,7 +657,7 @@ function App() {
                 aria-label="Filter by office"
                 aria-pressed={selectedCategory === 'office'}
               >
-                Office
+                Perkantoran
               </button>
               <button
                 type="button"
@@ -670,7 +670,7 @@ function App() {
                 aria-label="Filter by finance"
                 aria-pressed={selectedCategory === 'finance'}
               >
-                Finance
+                Keuangan
               </button>
               <button
                 type="button"
@@ -683,7 +683,7 @@ function App() {
                 aria-label="Filter by asset management"
                 aria-pressed={selectedCategory === 'asset management'}
               >
-                Asset Management
+                Manajemen Aset
               </button>
               <button
                 type="button"
@@ -696,7 +696,7 @@ function App() {
                 aria-label="Filter by other"
                 aria-pressed={selectedCategory === 'other'}
               >
-                Other
+                Lainnya
               </button>
             </div>
             {filteredWebsites.length > 0 && (
