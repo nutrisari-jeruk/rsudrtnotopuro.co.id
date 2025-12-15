@@ -21,25 +21,25 @@
     "name": "Santri",
     "url": "https://santri.rsudrtnotopuro.co.id",
     "image_url": "http://10.10.11.18/ImageRSD/Santri.jpg",
-    "categories": ["other"]
+    "categories": ["healthcare"]
   },
   {
     "name": "Culiner",
     "url": "https://cuti-online.rsudrtnotopuro.co.id/cuti_online/login",
     "image_url": "http://10.10.11.18/ImageRSD/Culiner.png",
-    "categories": ["other"]
+    "categories": ["office"]
   },
   {
     "name": "SIPA",
     "url": "https://sipa.rsudrtnotopuro.co.id/sipa",
     "image_url": "https://sipa.rsudrtnotopuro.co.id/sipa/img/Perencanaan.png",
-    "categories": ["asset management"]
+    "categories": ["finance"]
   },
   {
     "name": "SSO",
     "url": "https://sso.rsudrtnotopuro.co.id/SSO/Login",
     "image_url": "https://lh4.googleusercontent.com/-seq3FsbhNYU/AAAAAAAAAAI/AAAAAAAAAAA/cFv5LQFQP8g/s44-p-k-no-ns-nd/photo.jpg",
-    "categories": ["office"]
+    "categories": ["other"]
   },
   {
     "name": "Inventory dan Manajemen Aset",
@@ -183,13 +183,13 @@
     "name": "CSSD",
     "url": "http://cssd.rsudrtnotopuro.co.id/cssd/login_sso",
     "image_url": "http://cssd.rsudrtnotopuro.co.id/cssd/assets/img/logo_sterilization.png",
-    "categories": ["healthcare"]
+    "categories": ["asset management"]
   },
   {
     "name": "Simmas",
     "url": "https://simmas.rsudrtnotopuro.co.id/admin/user-management/auth/login",
     "image_url": "/logo.webp",
-    "categories": ["office"]
+    "categories": ["asset management"]
   },
   {
     "name": "ILP",
