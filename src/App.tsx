@@ -13,6 +13,8 @@ const websites: Website[] = websitesData as Website[];
 
 const RECENT_SEARCH_STORAGE_KEY = 'appPortalRecentSearches';
 const RECENT_OPENED_STORAGE_KEY = 'appPortalRecentOpened';
+const SORT_ORDER_STORAGE_KEY = 'appPortalSortOrder';
+const VIEW_MODE_STORAGE_KEY = 'appPortalViewMode';
 const RECENT_SEARCH_LIMIT = 8;
 const RECENT_OPENED_LIMIT = 6;
 
@@ -107,6 +109,40 @@ const readStoredOpenedApps = (): StoredWebsite[] => {
   }
 };
 
+const readStoredSortOrder = (): 'asc' | 'desc' => {
+  if (typeof window === 'undefined') {
+    return 'asc';
+  }
+
+  try {
+    const raw = window.localStorage.getItem(SORT_ORDER_STORAGE_KEY);
+    if (raw === 'asc' || raw === 'desc') {
+      return raw;
+    }
+    return 'asc';
+  } catch (error) {
+    console.error('Failed to parse sort order from storage', error);
+    return 'asc';
+  }
+};
+
+const readStoredViewMode = (): 'grid' | 'list' => {
+  if (typeof window === 'undefined') {
+    return 'grid';
+  }
+
+  try {
+    const raw = window.localStorage.getItem(VIEW_MODE_STORAGE_KEY);
+    if (raw === 'grid' || raw === 'list') {
+      return raw;
+    }
+    return 'grid';
+  } catch (error) {
+    console.error('Failed to parse view mode from storage', error);
+    return 'grid';
+  }
+};
+
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
@@ -114,13 +150,27 @@ function App() {
   const [recentOpenedApps, setRecentOpenedApps] = useState<StoredWebsite[]>(readStoredOpenedApps);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [activeSearchIndex, setActiveSearchIndex] = useState<number>(-1);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(readStoredSortOrder);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(readStoredViewMode);
   const { isDark, toggle } = useDarkMode();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const blurTimeoutRef = useRef<number | null>(null);
 
-  const filteredWebsites = websites.filter(website =>
-    website.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredWebsites = useMemo(() => {
+    const filtered = websites.filter(website =>
+      website.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    
+    return [...filtered].sort((a, b) => {
+      const nameA = a.name.toLowerCase();
+      const nameB = b.name.toLowerCase();
+      if (sortOrder === 'asc') {
+        return nameA.localeCompare(nameB);
+      } else {
+        return nameB.localeCompare(nameA);
+      }
+    });
+  }, [searchQuery, sortOrder]);
 
   const hasRecentSearches = recentSearches.length > 0;
   const hasRecentOpenedApps = recentOpenedApps.length > 0;
@@ -265,8 +315,30 @@ function App() {
   }, [recentOpenedApps]);
 
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem(SORT_ORDER_STORAGE_KEY, sortOrder);
+  }, [sortOrder]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem(VIEW_MODE_STORAGE_KEY, viewMode);
+  }, [viewMode]);
+
+  useEffect(() => {
     setActiveSearchIndex(-1);
   }, [searchQuery, isSearchFocused]);
+
+  const handleToggleSort = useCallback(() => {
+    setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+  }, []);
+
+  const handleSetViewMode = useCallback((mode: 'grid' | 'list') => {
+    setViewMode(mode);
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900">
@@ -472,11 +544,102 @@ function App() {
             <div className="h-px bg-gradient-to-r from-transparent via-gray-300 to-transparent dark:via-slate-600" />
           </div>
         )}
+        {filteredWebsites.length > 0 && (
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleToggleSort}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border border-gray-200/50 dark:border-slate-700/50 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-700/60 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400"
+                title={sortOrder === 'asc' ? 'Sort A-Z' : 'Sort Z-A'}
+                aria-label={sortOrder === 'asc' ? 'Sort ascending' : 'Sort descending'}
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {sortOrder === 'asc' ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"
+                    />
+                  )}
+                </svg>
+                <span className="hidden sm:inline">{sortOrder === 'asc' ? 'A-Z' : 'Z-A'}</span>
+              </button>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleSetViewMode('grid')}
+                className={`p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${
+                  viewMode === 'grid'
+                    ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700/60'
+                }`}
+                title="Grid view"
+                aria-label="Grid view"
+                aria-pressed={viewMode === 'grid'}
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                  />
+                </svg>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSetViewMode('list')}
+                className={`p-2 rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 ${
+                  viewMode === 'list'
+                    ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300'
+                    : 'bg-white/80 dark:bg-slate-800/80 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-slate-700/60'
+                }`}
+                title="List view"
+                aria-label="List view"
+                aria-pressed={viewMode === 'list'}
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
         {filteredWebsites.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 dark:text-gray-400 text-lg">No apps found matching "{searchQuery}"</p>
           </div>
-        ) : (
+        ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
             {filteredWebsites.map((website, index) => (
               <a
@@ -523,6 +686,42 @@ function App() {
                       d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                     />
                   </svg>
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <div className="space-y-2">
+            {filteredWebsites.map((website, index) => (
+              <a
+                href={website.url}
+                key={website.name}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => addRecentOpened(website)}
+                onAuxClick={(event) => {
+                  if (event.button === 1) {
+                    addRecentOpened(website);
+                  }
+                }}
+                className="group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-lg shadow-sm hover:shadow-md border border-gray-200/50 dark:border-slate-700/50 p-2.5 flex flex-col sm:flex-row items-center sm:items-center gap-3 transition-all duration-300 hover:border-blue-300/50 dark:hover:border-blue-500/50"
+                style={{ animationDelay: `${index * 30}ms` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-indigo-50/50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10 flex flex-col sm:flex-row items-center gap-3 w-full">
+                  <div className="p-1.5 rounded-md bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 group-hover:from-blue-100 group-hover:to-indigo-100 dark:group-hover:from-blue-800/40 dark:group-hover:to-indigo-800/40 transition-all duration-300 flex-shrink-0">
+                    <img
+                      src={failedImages.has(website.image_url) ? '/logo.webp' : website.image_url}
+                      alt={website.name}
+                      className="h-8 w-auto object-contain transition-transform duration-300 group-hover:scale-110"
+                      onError={() => {
+                        setFailedImages(prev => new Set(prev).add(website.image_url));
+                      }}
+                    />
+                  </div>
+                  <h3 className="text-base font-semibold text-gray-800 dark:text-gray-200 flex-1 text-center sm:text-left group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors duration-300">
+                    {website.name}
+                  </h3>
                 </div>
               </a>
             ))}
