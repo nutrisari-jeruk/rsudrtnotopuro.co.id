@@ -73,7 +73,7 @@
   },
   {
     "name": "Keuangan",
-    "url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/login",
+    "url": "https://keuangan.rsudrtnotopuro.co.id/keuangan/login",
     "image_url": "http://10.10.11.18/ImageRSD/Keuangan.png",
     "categories": ["finance"]
   },
@@ -194,7 +194,7 @@
   {
     "name": "ILP",
     "url": "https://ilp.rsudrtnotopuro.co.id/ilp/login_sso",
-    "image_url": "http://keuangan.rsudrtnotopuro.co.id/keuangan/assets/img/logo_finance.png",
+    "image_url": "https://keuangan.rsudrtnotopuro.co.id/keuangan/assets/img/logo_finance.png",
     "categories": ["finance"]
   },
   {
