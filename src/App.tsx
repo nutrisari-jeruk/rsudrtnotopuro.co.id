@@ -209,7 +209,9 @@ function App() {
 
     const knownWebsitesByUrl = new Map(websites.map(site => [site.url, site]));
 
-    return recentOpenedApps.map(item => knownWebsitesByUrl.get(item.url) ?? item);
+    return recentOpenedApps
+      .map(item => knownWebsitesByUrl.get(item.url) ?? item)
+      .filter(item => knownWebsitesByUrl.has(item.url));
   }, [hasRecentOpenedApps, recentOpenedApps]);
 
   const addRecentSearch = useCallback((query: string) => {
@@ -631,7 +633,7 @@ function App() {
                 aria-label="Show all categories"
                 aria-pressed={selectedCategory === null}
               >
-                All
+                Semua
               </button>
               <button
                 type="button"
